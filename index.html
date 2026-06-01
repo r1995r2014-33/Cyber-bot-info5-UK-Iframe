@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body> 
+
+  <!-- مكان ظهور البوت -->
+  <div id="CyberBotI" style="width:100%; height:100vh;"></div>
+
+  <!-- التقاط participant_id من الرابط -->
+  <script> 
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('participant_id');
+    window.participant_id = pid ? String(pid) : '';
+  </script>
+
+  <!-- كود Voiceflow (محفوظ كما هو + إضافة launch فقط) -->
+ <script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '6a1dfcc21bd221f955f41308' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com"
+          },
+          render: {
+            mode: 'embedded',
+            target: document.getElementById('CyberBotI')
+          }
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+</body>
+</html>
