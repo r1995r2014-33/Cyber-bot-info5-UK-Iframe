@@ -53,9 +53,11 @@ function checkFinishMessage() {
     document.querySelectorAll("*")
   )
   .map(el => el.innerText || "")
-  .join(" ");
+  .join(" ")
+.replace(/\s+/g, " ")
+.trim();
 
-  console.log(allText);
+ console.log("ALL TEXT:", allText);
 
   if (
     allText.includes("To get paid") &&
