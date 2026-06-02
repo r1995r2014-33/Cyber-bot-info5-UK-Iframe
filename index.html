@@ -39,5 +39,42 @@
       v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
   })(document, 'script');
 </script>
+
+ <!-- كود ( يرسل اشارة انه اذا انتهى البوتيظهر زر المتابعة للقسم التالي (استبيان بعد التجربة) --> 
+  
+  <script>
+
+let botFinishedSent = false;
+
+function checkFinishMessage() {
+
+  if (botFinishedSent) return;
+
+  const text = (
+    document.body.innerText || ""
+  ).replace(/\s+/g, " ").trim();
+
+  const finishPhrase =
+    'IMPORTANT: To get paid, please complete the next section of the survey. To continue, click the “Next” button at the bottom of this page. Thanks';
+
+  if (text.includes(finishPhrase)) {
+
+    botFinishedSent = true;
+
+    console.log("BOT_FINISHED SENT");
+
+    window.parent.postMessage(
+      "BOT_FINISHED",
+      "*"
+    );
+
+  }
+
+}
+
+setInterval(checkFinishMessage, 1000);
+
+</script>
+  
 </body>
 </html>
