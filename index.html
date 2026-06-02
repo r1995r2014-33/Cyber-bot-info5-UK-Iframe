@@ -49,19 +49,22 @@ function checkFinishMessage() {
 
   if (botFinishedSent) return;
 
-  const allText = Array.from(
-    document.querySelectorAll("*")
-  )
-  .map(el => el.innerText || "")
-  .join(" ")
-.replace(/\s+/g, " ")
-.trim();
+  const messages = document.querySelectorAll(
+    '[class*="message"], [class*="bubble"]'
+  );
 
- console.log("ALL TEXT:", allText);
+  const lastText = Array.from(messages)
+    .slice(-5)
+    .map(el => el.innerText || "")
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  console.log("LAST MSGS:", lastText);
 
   if (
-    allText.includes("To get paid") &&
-    allText.includes("next section of the survey")
+    lastText.includes("To get paid") &&
+    lastText.includes("next section of the survey")
   ) {
 
     botFinishedSent = true;
@@ -77,10 +80,7 @@ function checkFinishMessage() {
 
 }
 
-setInterval(
-  checkFinishMessage,
-  1000
-);
+setInterval(checkFinishMessage, 1000);
 
 </script>
 </body>
