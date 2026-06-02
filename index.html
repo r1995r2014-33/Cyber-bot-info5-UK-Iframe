@@ -43,16 +43,16 @@
  <!--  كود ( يرسل اشارة انه اذا انتهى البوت يظهر زر المتابعة للقسم التالي (استبيان بعد التجربة) -حاليا كود اختبار فقط --> 
   
  <script>
-setTimeout(function(){
 
-  console.log("TEST SIGNAL SENT");
+setInterval(function(){
 
-  window.parent.postMessage(
-    "BOT_FINISHED",
-    "*"
+  console.log(
+    "TEXT:",
+    (document.body.innerText || "")
   );
 
-}, 5000);
+},5000);
+
 </script>
   
 </body>
