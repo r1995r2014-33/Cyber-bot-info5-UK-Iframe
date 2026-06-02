@@ -42,46 +42,60 @@
 
  <!--  كود ( يرسل اشارة انه اذا انتهى البوت يظهر زر المتابعة للقسم التالي (استبيان بعد التجربة) -حاليا كود اختبار فقط --> 
 <script>
-
 let botFinishedSent = false;
 
-function checkFinishMessage() {
+function getVisibleText(root) {
+  let text = "";
 
+  function walk(node) {
+    if (!node) return;
+
+    if (node.nodeType === Node.TEXT_NODE) {
+      text += " " + node.textContent;
+      return;
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.DOCUMENT_NODE && node.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
+      return;
+    }
+
+    const tag = node.tagName;
+    if (tag === "SCRIPT" || tag === "STYLE" || tag === "NOSCRIPT") {
+      return;
+    }
+
+    if (node.shadowRoot) {
+      walk(node.shadowRoot);
+    }
+
+    node.childNodes.forEach(walk);
+  }
+
+  walk(root);
+
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function checkFinishMessage() {
   if (botFinishedSent) return;
 
-  const messages = document.querySelectorAll(
-    '[class*="message"], [class*="bubble"]'
-  );
+  const text = getVisibleText(document.body);
 
-  const lastText = Array.from(messages)
-    .slice(-5)
-    .map(el => el.innerText || "")
-    .join(" ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  console.log("LAST MSGS:", lastText);
+  console.log("VISIBLE TEXT:", text);
 
   if (
-    lastText.includes("To get paid") &&
-    lastText.includes("next section of the survey")
+    text.includes("To get paid") &&
+    text.includes("next section of the survey")
   ) {
-
     botFinishedSent = true;
 
     console.log("BOT_FINISHED SENT");
 
-    window.parent.postMessage(
-      "BOT_FINISHED",
-      "*"
-    );
-
+    window.parent.postMessage("BOT_FINISHED", "*");
   }
-
 }
 
 setInterval(checkFinishMessage, 1000);
-
 </script>
 </body>
 </html>
