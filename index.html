@@ -41,19 +41,45 @@
 </script>
 
  <!--  كود ( يرسل اشارة انه اذا انتهى البوت يظهر زر المتابعة للقسم التالي (استبيان بعد التجربة) -حاليا كود اختبار فقط --> 
-  
- <script>
+<script>
 
-setInterval(function(){
+let botFinishedSent = false;
 
-  console.log(
-    "TEXT:",
-    (document.body.innerText || "")
-  );
+function checkFinishMessage() {
 
-},5000);
+  if (botFinishedSent) return;
+
+  const allText = Array.from(
+    document.querySelectorAll("*")
+  )
+  .map(el => el.innerText || "")
+  .join(" ");
+
+  console.log(allText);
+
+  if (
+    allText.includes("To get paid") &&
+    allText.includes("next section of the survey")
+  ) {
+
+    botFinishedSent = true;
+
+    console.log("BOT_FINISHED SENT");
+
+    window.parent.postMessage(
+      "BOT_FINISHED",
+      "*"
+    );
+
+  }
+
+}
+
+setInterval(
+  checkFinishMessage,
+  1000
+);
 
 </script>
-  
 </body>
 </html>
